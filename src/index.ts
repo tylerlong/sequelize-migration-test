@@ -13,14 +13,14 @@ const qi = sq.getQueryInterface();
   const desc = await qi.describeTable('bots');
   if (!desc.data) {
     console.log('Add data column');
-    qi.addColumn('bots', 'data', {type: JSON});
+    await qi.addColumn('bots', 'data', {type: JSON});
   }
 
   const schemas = (await qi.showAllSchemas()) as {name: string}[];
   console.log(schemas);
   if (schemas.filter(schema => schema.name === 'caches').length === 0) {
     console.log('add table caches');
-    qi.createTable('caches', {
+    await qi.createTable('caches', {
       id: {
         type: INTEGER,
         autoIncrement: true,
