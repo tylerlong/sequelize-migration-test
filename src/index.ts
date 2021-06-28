@@ -1,24 +1,19 @@
-console.log('Try npm run lint/fix!');
+import {Sequelize, JSON} from 'sequelize';
 
-const longString =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ut aliquet diam.';
+const sq = new Sequelize('sqlite://./db.sqlite', {
+  define: {
+    timestamps: true,
+  },
+  logging: false,
+});
 
-const trailing = 'Semicolon';
+const qi = sq.getQueryInterface();
 
-const why = 'am I tabbed?';
-
-export function doSomeStuff(
-  withThis: string,
-  andThat: string,
-  andThose: string[]
-) {
-  //function on one line
-  if (!andThose.length) {
-    return false;
+(async () => {
+  const desc = await qi.describeTable('bots');
+  console.log(desc);
+  if (!desc.data) {
+    console.log('Add data column');
+    qi.addColumn('bots', 'data', {type: JSON});
   }
-  console.log(withThis);
-  console.log(andThat);
-  console.dir(andThose);
-  return;
-}
-// TODO: more examples
+})();
